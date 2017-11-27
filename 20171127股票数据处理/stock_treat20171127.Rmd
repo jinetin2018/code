@@ -5,26 +5,25 @@ output: html_notebook
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and preSSing *Ctrl+Shift+Enter*. 
 [TOC]
 
 # 股票数据处理
 
 ```{r}
-setwd("~/Documents/Rstudio")
+setwd("~/stock")
 library(quantmod)
 library(TTR)
 library(PerformanceAnalytics)
 library(ggplot2)
 library(scales)
 options(stringAsFactors = FALSE)
-
 ```
 # 处理数据
 - 指数：上证指数、香港恒生指数、纳斯达克指数、等
-- 股票：中国平安、贵州茅台、格力电器、五粮液、等。
-- 美股：英伟达(NVDA),阿里巴巴(BABA),网易(NTES)
-- 港股：腾讯
+- 股票：中国平安601318、贵州茅台600519、格力电器000651、美的电器000333、五粮液000858、伊利股份600887、洛阳钼业603993、万科A000002、招商银行600036、同仁堂600085、海天味业603288、东阿阿胶000423、云南白药000538、片子癀600436。
+- 美股：英伟达(NVDA),阿里巴巴(BABA),网易(NTES),亚马逊(AMZN)，苹果（AAPL），谷歌（GOOGL），特斯拉（TSLA），FACEBOOK（FB）
+- 港股：腾讯0700.HK
 
 指数       | 代码    |简称
 -----------|---------|-------
@@ -33,15 +32,29 @@ options(stringAsFactors = FALSE)
 恒生指数   |^HSI     |HSI
 
 ```{r}
-symbols <- c("GSPC","HSI","000001.SS")
+symbols <- c("GSPC","HSI","000001.SS","601318.SS","600519.SS","000651.SZ","000333.SZ",
+              "000858.SZ","600887.SS","603993.SS","000002.SZ","600036.SS","600085.SS",
+              "603288.SS","000423.SZ","000538.SZ","600436.SS")
 suppressWarnings(getSymbols(symbols,src = "yahoo",from="2012-01-01"))
-df <- merge(GSPC$GSPC.Adjusted,HSI$HSI.Adjusted,`000001.SS`$`000001.SS.Adjusted`)
-names(df) <- c("GSPC","HSI","SSE")
+
+#getSymbols(symbols,src="yahoo",from="2012-01-01")
+df <- merge(GSPC$GSPC.Adjusted,HSI$HSI.Adjusted,`000001.SS`$`000001.SS.Adjusted`,
+            `601318.SS`$`601318.SS.Adjusted`,`600519.SS`$`600519.SS.Adjusted`,
+            `000651.SZ`$`000651.SZ.Adjusted`,
+            `000333.SZ`$`000333.SZ.Adjusted`,`000858.SZ`$`000858.SZ.Adjusted`,
+            `600887.SS`$`600887.SS.Adjusted`,`603993.SS`$`603993.SS.Adjusted`,
+            `000002.SZ`$`000002.SZ.Adjusted`,`600036.SS`$`600036.SS.Adjusted`,
+            `600085.SS`$`600085.SS.Adjusted`,`603288.SS`$`603288.SS.Adjusted`,
+            `000423.SZ`$`000423.SZ.Adjusted`,`000538.SZ`$`000538.SZ.Adjusted`,
+            `600436.SS`$`600436.SS.Adjusted`)
+names(df) <- c("纳斯达克指数","恒生指数","上证指数","中国平安","贵州茅台","格力电器","美的电器",
+               "五粮液","伊利股份","洛阳钼业","万科A","招商银行","同仁堂","海天味业","东阿阿胶",
+               "云南白药","片子癀")
 head(df)
 
 ```
 
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by preSSing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or preSS *Ctrl+Shift+K* to preview the HTML file).

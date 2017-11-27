@@ -174,20 +174,19 @@ $(document).ready(function () {
 
 <!-- rnb-text-begin -->
 <p>This is an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. When you execute code within the notebook, the results appear beneath the code.</p>
-<p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>. [TOC]</p>
+<p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and preSSing <em>Ctrl+Shift+Enter</em>. [TOC]</p>
 <div class="section level1">
 <h1>股票数据处理</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCJ+L0RvY3VtZW50cy9Sc3R1ZGlvXCIpXG5saWJyYXJ5KHF1YW50bW9kKVxubGlicmFyeShUVFIpXG5saWJyYXJ5KFBlcmZvcm1hbmNlQW5hbHl0aWNzKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShzY2FsZXMpXG5vcHRpb25zKHN0cmluZ0FzRmFjdG9ycyA9IEZBTFNFKVxuXG5gYGAifQ== -->
-<pre class="r"><code>setwd(&quot;~/Documents/Rstudio&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCJ+L3N0b2NrXCIpXG5saWJyYXJ5KHF1YW50bW9kKVxubGlicmFyeShUVFIpXG5saWJyYXJ5KFBlcmZvcm1hbmNlQW5hbHl0aWNzKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShzY2FsZXMpXG5vcHRpb25zKHN0cmluZ0FzRmFjdG9ycyA9IEZBTFNFKVxuYGBgIn0= -->
+<pre class="r"><code>setwd(&quot;~/stock&quot;)
 library(quantmod)
 library(TTR)
 library(PerformanceAnalytics)
 library(ggplot2)
 library(scales)
-options(stringAsFactors = FALSE)
-</code></pre>
+options(stringAsFactors = FALSE)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -196,9 +195,9 @@ options(stringAsFactors = FALSE)
 <h1>处理数据</h1>
 <ul>
 <li>指数：上证指数、香港恒生指数、纳斯达克指数、等</li>
-<li>股票：中国平安、贵州茅台、格力电器、五粮液、等。</li>
-<li>美股：</li>
-<li>港股：腾讯</li>
+<li>股票：中国平安601318、贵州茅台600519、格力电器000651、美的电器000333、五粮液000858、伊利股份600887、洛阳钼业603993、万科A000002、招商银行600036、同仁堂600085、海天味业603288、东阿阿胶000423、云南白药000538、片子癀600436。</li>
+<li>美股：英伟达(NVDA),阿里巴巴(BABA),网易(NTES),亚马逊(AMZN)，苹果（AAPL），谷歌（GOOGL），特斯拉（TSLA），FACEBOOK（FB）</li>
+<li>港股：腾讯0700.HK</li>
 </ul>
 <table>
 <thead>
@@ -228,21 +227,111 @@ options(stringAsFactors = FALSE)
 </table>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ltYm9scyA8LSBjKFwiXkdTUENcIixcIl5IU0lcIixcIjAwMDAwMS5TU1wiKVxuc3VwcHJlc3NXYXJuaW5ncyhnZXRTeW1ib2xzKHN5bWJvbHMsc3JjID0gXCJ5YWhvb1wiLGZyb209XCIyMDEyLTAxLTAxXCIpKVxuZGYgPC0gbWVyZ2UoR1NQQyRHU1BDLkFkanVzdGVkLEhTSSRIU0kuQWRqdXN0ZWQsYDAwMDAwMS5TU2AkYDAwMDAwMS5TUy5BZGp1c3RlZGApXG5uYW1lcyhkZikgPC0gYyhcIkdTUENcIixcIkhTSVwiLFwiU1NFXCIpXG5cblxuYGBgIn0= -->
-<pre class="r"><code>symbols &lt;- c(&quot;^GSPC&quot;,&quot;^HSI&quot;,&quot;000001.SS&quot;)
-suppressWarnings(getSymbols(symbols,src = &quot;yahoo&quot;,from=&quot;2012-01-01&quot;))
-df &lt;- merge(GSPC$GSPC.Adjusted,HSI$HSI.Adjusted,`000001.SS`$`000001.SS.Adjusted`)
-names(df) &lt;- c(&quot;GSPC&quot;,&quot;HSI&quot;,&quot;SSE&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkZilcblxuYGBgIn0= -->
+<pre class="r"><code>head(df)
 </code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICBcXDM0N1xcMjcyXFwyNjNcXDM0NlxcMjI2XFwyNTdcXDM1MFxcMjc2XFwyNzZcXDM0NVxcMjA1XFwyMTNcXDM0NlxcMjE0XFwyMDdcXDM0NlxcMjI1XFwyNjBcbjIwMTItMDEtMDMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE4LjEwXG4yMDEyLTAxLTA0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxOC4yMFxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTkuMDBcbjIwMTItMDEtMDYgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE5LjE1XG4yMDEyLTAxLTA5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxOS4xOVxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTkuNjFcbiAgICAgICAgICAgXFwzNDZcXDIwMVxcMjIyXFwzNDdcXDIyNFxcMjM3XFwzNDZcXDIxNFxcMjA3XFwzNDZcXDIyNVxcMjYwXG4yMDEyLTAxLTAzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTg4NzcuNFxuMjAxMi0wMS0wNCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA4NjAwLjBcbjIwMTItMDEtMDUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgODYwMC4wXG4yMDEyLTAxLTA2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTg1OTMuMVxuMjAxMi0wMS0wOSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE4ODY1LjdcbjIwMTItMDEtMTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxOTAwNC4zXG4gICAgICAgICAgIFxcMzQ0XFwyNzBcXDIxMlxcMzUwXFwyNTdcXDIwMVxcMzQ2XFwyMTRcXDIwN1xcMzQ2XFwyMjVcXDI2MFxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDIxNjkuMzkwXG4yMDEyLTAxLTA1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyMTQ4LjQ1MlxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMjE2My4zOTVcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDIyMjUuODkwXG4yMDEyLTAxLTEwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyMjg1Ljc0NFxuICAgICAgICAgICBcXDM0NFxcMjcwXFwyNTVcXDM0NVxcMjMzXFwyNzVcXDM0NVxcMjcxXFwyNjNcXDM0NVxcMjU2XFwyMTFcbjIwMTItMDEtMDMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxNS43NDY2MlxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDYgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbiAgICAgICAgICAgXFwzNTBcXDI2NFxcMjY1XFwzNDVcXDI2N1xcMjM2XFwzNTBcXDIxNFxcMjA1XFwzNDVcXDIxN1xcMjYwXG4yMDEyLTAxLTAzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuMjAxMi0wMS0wNCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTMyLjg1ODlcbjIwMTItMDEtMDUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEzMS4zMzg3XG4yMDEyLTAxLTA2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxMzMuODQxMVxuMjAxMi0wMS0wOSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTM0LjgyMzRcbjIwMTItMDEtMTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEzOS40NjMwXG4gICAgICAgICAgIFxcMzQ2XFwyNDBcXDI3NFxcMzQ1XFwyMTJcXDIzM1xcMzQ3XFwyMjRcXDI2NVxcMzQ1XFwyMzFcXDI1MFxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDYuODczNTgyXG4yMDEyLTAxLTEwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuICAgICAgICAgICBcXDM0N1xcMjc2XFwyMTZcXDM0N1xcMjMyXFwyMDRcXDM0N1xcMjI0XFwyNjVcXDM0NVxcMjMxXFwyNTAgXFwzNDRcXDI3MlxcMjI0XFwzNDdcXDI2MlxcMjU2XFwzNDZcXDI2NlxcMjYyXG4yMDEyLTAxLTAzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDkuNDU1MDUxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyNy40NzI4MFxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgOS41MjU0OTYgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDI3LjQ5MDMyXG4yMDEyLTAxLTA2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA5LjUyNTQ5NiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMjcuNjA0MjBcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTAuMDg5MDQxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyNy44MDU3MFxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxMC4yNjEyMzYgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDI4LjkwMDc1XG4gICAgICAgICAgIFxcMzQ0XFwyNzRcXDIxMlxcMzQ1XFwyMTBcXDI1MVxcMzUwXFwyMDJcXDI0MVxcMzQ0XFwyNzNcXDI3NVxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDUuNDI0NTEzXG4yMDEyLTAxLTA1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA1LjMxNDUzMlxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgNS40MDUyNjJcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDUuNTM0NDg2XG4yMDEyLTAxLTEwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA1LjY1ODIwN1xuICAgICAgICAgICBcXDM0NlxcMjY0XFwyMzNcXDM1MVxcMjMwXFwyNjNcXDM1MVxcMjIyXFwyNzRcXDM0NFxcMjcwXFwyMzIgXFwzNDRcXDI3MFxcMjA3XFwzNDdcXDI0N1xcMjIxQVxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICAgICAgICBOQVxuMjAxMi0wMS0wNCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICA2LjI1NjMyMlxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICA2LjE4ODA0MFxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICA2LjExMTIyM1xuMjAxMi0wMS0wOSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICA2LjMyNDYwNFxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICA2LjQyNzAyN1xuICAgICAgICAgICBcXDM0NlxcMjEzXFwyMzNcXDM0NVxcMjI1XFwyMDZcXDM1MVxcMjIzXFwyNjZcXDM1MFxcMjQxXFwyMTQgXFwzNDVcXDIyMFxcMjE0XFwzNDRcXDI3M1xcMjAxXFwzNDVcXDI0MFxcMjAyXG4yMDEyLTAxLTAzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDguODMxNTc3ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxMy4yNTExMVxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgOS4wMTMxODEgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEyLjU3MTgxXG4yMDEyLTAxLTA2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA5LjA3Mzc0MSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTIuNzUzNTlcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDkuMzY4OTA3ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxMy4yNjA2OFxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgOS41MDUxNDggICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEzLjY4MTY1XG4gICAgICAgICAgIFxcMzQ2XFwyNjVcXDI2N1xcMzQ1XFwyNDRcXDI1MVxcMzQ1XFwyMjFcXDI2M1xcMzQ0XFwyNzBcXDIzMlxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkFcbjIwMTItMDEtMDkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTEwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQVxuICAgICAgICAgICBcXDM0NFxcMjcwXFwyMzRcXDM1MVxcMjMwXFwyNzdcXDM1MVxcMjMwXFwyNzdcXDM1MFxcMjAzXFwyNjZcbjIwMTItMDEtMDMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAzNy41ODYzMlxuMjAxMi0wMS0wNSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMzYuMTc0NTRcbjIwMTItMDEtMDYgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDM2LjU3NzkwXG4yMDEyLTAxLTA5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAzOC4zMTk3MVxuMjAxMi0wMS0xMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMzkuMTUzOTRcbiAgICAgICAgICAgXFwzNDRcXDI3MlxcMjIxXFwzNDVcXDIxNVxcMjI3XFwzNDdcXDIzMVxcMjc1XFwzNTBcXDIxNVxcMjU3IFxcMzQ3XFwyMTFcXDIwN1xcMzQ1XFwyNTVcXDIyMFxcMzQ3XFwyMzFcXDIwMFxuMjAxMi0wMS0wMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE5BXG4yMDEyLTAxLTA0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAzMi41NjAyOSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTUuMzI5MTlcbjIwMTItMDEtMDUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDMxLjc4MTQyICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxNC43OTgxOVxuMjAxMi0wMS0wNiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMzIuNTM0NzIgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE0LjcwOTk5XG4yMDEyLTAxLTA5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAzMi41MjE5OCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTQuNzE0MTZcbjIwMTItMDEtMTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDMzLjMxMzY4ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxNS4xMTMwNVxuIn0= -->
+<pre><code>           \347\272\263\346\226\257\350\276\276\345\205\213\346\214\207\346\225\260
+2012-01-03                                                                    18.10
+2012-01-04                                                                    18.20
+2012-01-05                                                                    19.00
+2012-01-06                                                                    19.15
+2012-01-09                                                                    19.19
+2012-01-10                                                                    19.61
+           \346\201\222\347\224\237\346\214\207\346\225\260
+2012-01-03                                          18877.4
+2012-01-04                                           8600.0
+2012-01-05                                           8600.0
+2012-01-06                                          18593.1
+2012-01-09                                          18865.7
+2012-01-10                                          19004.3
+           \344\270\212\350\257\201\346\214\207\346\225\260
+2012-01-03                                               NA
+2012-01-04                                         2169.390
+2012-01-05                                         2148.452
+2012-01-06                                         2163.395
+2012-01-09                                         2225.890
+2012-01-10                                         2285.744
+           \344\270\255\345\233\275\345\271\263\345\256\211
+2012-01-03                                               NA
+2012-01-04                                         15.74662
+2012-01-05                                               NA
+2012-01-06                                               NA
+2012-01-09                                               NA
+2012-01-10                                               NA
+           \350\264\265\345\267\236\350\214\205\345\217\260
+2012-01-03                                               NA
+2012-01-04                                         132.8589
+2012-01-05                                         131.3387
+2012-01-06                                         133.8411
+2012-01-09                                         134.8234
+2012-01-10                                         139.4630
+           \346\240\274\345\212\233\347\224\265\345\231\250
+2012-01-03                                               NA
+2012-01-04                                               NA
+2012-01-05                                               NA
+2012-01-06                                               NA
+2012-01-09                                         6.873582
+2012-01-10                                               NA
+           \347\276\216\347\232\204\347\224\265\345\231\250 \344\272\224\347\262\256\346\266\262
+2012-01-03                                               NA                                   NA
+2012-01-04                                         9.455051                             27.47280
+2012-01-05                                         9.525496                             27.49032
+2012-01-06                                         9.525496                             27.60420
+2012-01-09                                        10.089041                             27.80570
+2012-01-10                                        10.261236                             28.90075
+           \344\274\212\345\210\251\350\202\241\344\273\275
+2012-01-03                                               NA
+2012-01-04                                         5.424513
+2012-01-05                                         5.314532
+2012-01-06                                         5.405262
+2012-01-09                                         5.534486
+2012-01-10                                         5.658207
+           \346\264\233\351\230\263\351\222\274\344\270\232 \344\270\207\347\247\221A
+2012-01-03                                               NA                        NA
+2012-01-04                                               NA                  6.256322
+2012-01-05                                               NA                  6.188040
+2012-01-06                                               NA                  6.111223
+2012-01-09                                               NA                  6.324604
+2012-01-10                                               NA                  6.427027
+           \346\213\233\345\225\206\351\223\266\350\241\214 \345\220\214\344\273\201\345\240\202
+2012-01-03                                               NA                                   NA
+2012-01-04                                         8.831577                             13.25111
+2012-01-05                                         9.013181                             12.57181
+2012-01-06                                         9.073741                             12.75359
+2012-01-09                                         9.368907                             13.26068
+2012-01-10                                         9.505148                             13.68165
+           \346\265\267\345\244\251\345\221\263\344\270\232
+2012-01-03                                               NA
+2012-01-04                                               NA
+2012-01-05                                               NA
+2012-01-06                                               NA
+2012-01-09                                               NA
+2012-01-10                                               NA
+           \344\270\234\351\230\277\351\230\277\350\203\266
+2012-01-03                                               NA
+2012-01-04                                         37.58632
+2012-01-05                                         36.17454
+2012-01-06                                         36.57790
+2012-01-09                                         38.31971
+2012-01-10                                         39.15394
+           \344\272\221\345\215\227\347\231\275\350\215\257 \347\211\207\345\255\220\347\231\200
+2012-01-03                                               NA                                   NA
+2012-01-04                                         32.56029                             15.32919
+2012-01-05                                         31.78142                             14.79819
+2012-01-06                                         32.53472                             14.70999
+2012-01-09                                         32.52198                             14.71416
+2012-01-10                                         33.31368                             15.11305</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
-<p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
+<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by preSSing <em>Ctrl+Alt+I</em>.</p>
+<p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or preSS <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCltUT0NdDQoNCiMgucnGscr9vt20psDtDQoNCmBgYHtyfQ0Kc2V0d2QoIn4vRG9jdW1lbnRzL1JzdHVkaW8iKQ0KbGlicmFyeShxdWFudG1vZCkNCmxpYnJhcnkoVFRSKQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoc2NhbGVzKQ0Kb3B0aW9ucyhzdHJpbmdBc0ZhY3RvcnMgPSBGQUxTRSkNCg0KYGBgDQojILSmwO3K/b7dDQotINa4yv2jusnP1qTWuMr9oaLP47jbuuPJ+ta4yv2hosTJy7m077/L1rjK/aGitcgNCi0gucnGsaO61tC5+sa9sLKhornz1t3DqcyooaK48cGmtefG96GizuXBuNK6oaK1yKGjDQotIMPAucmjug0KLSC427nJo7rM2tG2DQoNCta4yv0gICAgICAgfCC0+sLrICAgIHy88rPGDQotLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0tLQ0KICDJz9ak1rjK/SB8MDAwMDAxLlNTfFNTRQ0KserG1TUwMNa4yv18XkdTUEMgICAgfEdTUEMNCrrjyfrWuMr9ICAgfF5IU0kgICAgIHxIU0kNCg0KYGBge3J9DQpzeW1ib2xzIDwtIGMoIl5HU1BDIiwiXkhTSSIsIjAwMDAwMS5TUyIpDQpzdXBwcmVzc1dhcm5pbmdzKGdldFN5bWJvbHMoc3ltYm9scyxzcmMgPSAieWFob28iLGZyb209IjIwMTItMDEtMDEiKSkNCmRmIDwtIG1lcmdlKEdTUEMkR1NQQy5BZGp1c3RlZCxIU0kkSFNJLkFkanVzdGVkLGAwMDAwMDEuU1NgJGAwMDAwMDEuU1MuQWRqdXN0ZWRgKQ0KbmFtZXMoZGYpIDwtIGMoIkdTUEMiLCJIU0kiLCJTU0UiKQ0KDQoNCmBgYA0KDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlU1NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCltUT0NdDQoNCiMgucnGscr9vt20psDtDQoNCmBgYHtyfQ0Kc2V0d2QoIn4vc3RvY2siKQ0KbGlicmFyeShxdWFudG1vZCkNCmxpYnJhcnkoVFRSKQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoc2NhbGVzKQ0Kb3B0aW9ucyhzdHJpbmdBc0ZhY3RvcnMgPSBGQUxTRSkNCmBgYA0KIyC0psDtyv2+3Q0KLSDWuMr9o7rJz9ak1rjK/aGiz+O427rjyfrWuMr9oaLEycu5tO+/y9a4yv2horXIDQotILnJxrGjutbQufrGvbCyNjAxMzE4oaK589bdw6nMqDYwMDUxOaGiuPHBprXnxvcwMDA2NTGhosPAtcS158b3MDAwMzMzoaLO5cG40rowMDA4NTihotLBwPu5ybfdNjAwODg3oaLC5dH07uLStTYwMzk5M6GizfK/xkEwMDAwMDKhotXQyczS+NDQNjAwMDM2oaLNrMjKzMM2MDAwODWhorqjzOzOttK1NjAzMjg4oaK2q7CisKK9ujAwMDQyM6Gi1MbEz7DX0qkwMDA1Mzihosas19PxpTYwMDQzNqGjDQotIMPAucmjutOizrC07yhOVkRBKSywosDvsM2wzShCQUJBKSzN+NLXKE5URVMpLNHHwu3RtyhBTVpOKaOsxru5+6OoQUFQTKOpo6y5yLjoo6hHT09HTKOpo6zM2Mu5wK2jqFRTTEGjqaOsRkFDRUJPT0ujqEZCo6kNCi0guNu5yaO6zNrRtjA3MDAuSEsNCg0K1rjK/SAgICAgICB8ILT6wusgICAgfLzys8YNCi0tLS0tLS0tLS0tfC0tLS0tLS0tLXwtLS0tLS0tDQogIMnP1qTWuMr9IHwwMDAwMDEuU1N8U1NFDQqx6sbVNTAw1rjK/XxeR1NQQyAgICB8R1NQQw0KuuPJ+ta4yv0gICB8XkhTSSAgICAgfEhTSQ0KDQpgYGB7cn0NCnN5bWJvbHMgPC0gYygiR1NQQyIsIkhTSSIsIjAwMDAwMS5TUyIsIjYwMTMxOC5TUyIsIjYwMDUxOS5TUyIsIjAwMDY1MS5TWiIsIjAwMDMzMy5TWiIsDQogICAgICAgICAgICAgICIwMDA4NTguU1oiLCI2MDA4ODcuU1MiLCI2MDM5OTMuU1MiLCIwMDAwMDIuU1oiLCI2MDAwMzYuU1MiLCI2MDAwODUuU1MiLA0KICAgICAgICAgICAgICAiNjAzMjg4LlNTIiwiMDAwNDIzLlNaIiwiMDAwNTM4LlNaIiwiNjAwNDM2LlNTIikNCnN1cHByZXNzV2FybmluZ3MoZ2V0U3ltYm9scyhzeW1ib2xzLHNyYyA9ICJ5YWhvbyIsZnJvbT0iMjAxMi0wMS0wMSIpKQ0KDQojZ2V0U3ltYm9scyhzeW1ib2xzLHNyYz0ieWFob28iLGZyb209IjIwMTItMDEtMDEiKQ0KZGYgPC0gbWVyZ2UoR1NQQyRHU1BDLkFkanVzdGVkLEhTSSRIU0kuQWRqdXN0ZWQsYDAwMDAwMS5TU2AkYDAwMDAwMS5TUy5BZGp1c3RlZGAsDQogICAgICAgICAgICBgNjAxMzE4LlNTYCRgNjAxMzE4LlNTLkFkanVzdGVkYCxgNjAwNTE5LlNTYCRgNjAwNTE5LlNTLkFkanVzdGVkYCwNCiAgICAgICAgICAgIGAwMDA2NTEuU1pgJGAwMDA2NTEuU1ouQWRqdXN0ZWRgLA0KICAgICAgICAgICAgYDAwMDMzMy5TWmAkYDAwMDMzMy5TWi5BZGp1c3RlZGAsYDAwMDg1OC5TWmAkYDAwMDg1OC5TWi5BZGp1c3RlZGAsDQogICAgICAgICAgICBgNjAwODg3LlNTYCRgNjAwODg3LlNTLkFkanVzdGVkYCxgNjAzOTkzLlNTYCRgNjAzOTkzLlNTLkFkanVzdGVkYCwNCiAgICAgICAgICAgIGAwMDAwMDIuU1pgJGAwMDAwMDIuU1ouQWRqdXN0ZWRgLGA2MDAwMzYuU1NgJGA2MDAwMzYuU1MuQWRqdXN0ZWRgLA0KICAgICAgICAgICAgYDYwMDA4NS5TU2AkYDYwMDA4NS5TUy5BZGp1c3RlZGAsYDYwMzI4OC5TU2AkYDYwMzI4OC5TUy5BZGp1c3RlZGAsDQogICAgICAgICAgICBgMDAwNDIzLlNaYCRgMDAwNDIzLlNaLkFkanVzdGVkYCxgMDAwNTM4LlNaYCRgMDAwNTM4LlNaLkFkanVzdGVkYCwNCiAgICAgICAgICAgIGA2MDA0MzYuU1NgJGA2MDA0MzYuU1MuQWRqdXN0ZWRgKQ0KbmFtZXMoZGYpIDwtIGMoIsTJy7m077/L1rjK/SIsIrrjyfrWuMr9Iiwiyc/WpNa4yv0iLCLW0Ln6xr2wsiIsIrnz1t3DqcyoIiwiuPHBprXnxvciLCLDwLXEtefG9yIsDQogICAgICAgICAgICAgICAizuXBuNK6Iiwi0sHA+7nJt90iLCLC5dH07uLStSIsIs3yv8ZBIiwi1dDJzNL40NAiLCLNrMjKzMMiLCK6o8zszrbStSIsIrarsKKwor26IiwNCiAgICAgICAgICAgICAgICLUxsTPsNfSqSIsIsas19PxpSIpDQpoZWFkKGRmKQ0KDQpgYGANCg0KDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVTU2luZyAqQ3RybCtBbHQrSSouDQoNCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVTUyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLg0K</div>
 
 
 
