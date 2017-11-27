@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+[TOC]
+
+# 股票数据处理
+
+```{r}
+setwd("~/Documents/Rstudio")
+library(quantmod)
+library(TTR)
+library(PerformanceAnalytics)
+library(ggplot2)
+library(scales)
+options(stringAsFactors = FALSE)
+
+```
+# 处理数据
+- 指数：上证指数、香港恒生指数、纳斯达克指数、等
+- 股票：中国平安、贵州茅台、格力电器、五粮液、等。
+- 美股：
+- 港股：腾讯
+
+指数       | 代码    |简称
+-----------|---------|-------
+  上证指数 |000001.SS|SSE
+标普500指数|^GSPC    |GSPC
+恒生指数   |^HSI     |HSI
+
+```{r}
+symbols <- c("^GSPC","^HSI","000001.SS")
+suppressWarnings(getSymbols(symbols,src = "yahoo",from="2012-01-01"))
+df <- merge(GSPC$GSPC.Adjusted,HSI$HSI.Adjusted,`000001.SS`$`000001.SS.Adjusted`)
+names(df) <- c("GSPC","HSI","SSE")
+
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
