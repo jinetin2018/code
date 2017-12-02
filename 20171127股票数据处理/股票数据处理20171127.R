@@ -5,9 +5,10 @@ library(ggplot2)
 library(scales)
 options(stringAsFactors = FALSE)
 
-symbols <- c("GSPC","HSI","000001.SS","601318.SS","600519.SS","000651.SZ","000333.SZ",
+symbols <- c("^GSPC","^HSI","000001.SS","601318.SS","600519.SS","000651.SZ","000333.SZ",
              "000858.SZ","600887.SS","603993.SS","000002.SZ","600036.SS","600085.SS",
              "603288.SS","000423.SZ","000538.SZ","600436.SS")
+
 suppressWarnings(getSymbols(symbols,src = "yahoo",from="2012-01-01"))
 
 #getSymbols(symbols,src="yahoo",from="2012-01-01")
@@ -25,3 +26,7 @@ names(df) <- c("GSPC","HSI","000001.SS","601318.SS","600519.SS","000651.SZ","000
                "000858.SZ","600887.SS","603993.SS","000002.SZ","600036.SS","600085.SS","603288.SS",
                "000423.SZ","000538.SZ","600436.SS")
 head(df)
+SS <- as.data.frame(`000001.SS`) 
+SS <- cbind(index(`000001.SS`),SS)
+names(SS) <- c("date","open","high","low","close","volume","adjuested_close")
+write.table(SS,"clipboard",sep = ",",quote = TRUE,col.names = TRUE,row.names = FALSE,fileEncoding = "utf-8")
