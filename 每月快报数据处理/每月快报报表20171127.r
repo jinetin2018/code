@@ -1,4 +1,4 @@
-
+# 处理每月快报数据
 
 library(ggplot2)   #图形处理
 library(dplyr)        #数据处理
@@ -20,10 +20,11 @@ library(stringr)
 # 1、读取数据 --------------------------------------------------------------------
 setwd("D:/R/quickreport/month_report")
 
-mobile<-read.table("201710月度快报报表（统计表）.csv",sep=",",encoding="GBK",skip=4,header=TRUE)
-mobile<-data.table(mobile)
+mobile<-read.table("201802月度快报报表（统计表）.csv",sep=",",encoding="GBK",skip=4,header=TRUE)
+#mobile <- fread("201802月度快报报表（统计表）.csv",sep=",",skip=4,header=TRUE,colClasses=c(rep("factor",44),rep("numeric",19)))
+#mobile<-data.table(mobile)
 
-
+#names(mobile)[12] <- "部门一级"
 # ~~~~定义维度 --------------------------------------------------------------------
 
 
@@ -32,6 +33,7 @@ mobile<-data.table(mobile)
 宽带50M<<-c("1000M","100M","1024M","1400M","2000M","200M","300M","350M","500M","50M","600M","80M")
 宽带100M<<-c("1000M","100M","1024M","1400M","2000M","200M","300M","350M","500M","600M")
 宽带8M<-c("0.5M","1M","2M","3M","4M","6M","8M")
+宽带200M<<-c("1000M","1024M","1400M","2000M","200M","300M","350M","500M","600M")
 宽带20M以下<-c("0.5M","1M","2M","3M","4M","6M","8M","10M","12M","15M")
 天翼高清产品<-c("天翼高清超值版","天翼高清简约版","天翼高清融合超值版","天翼高清融合简约版","天翼高清融合尊享版A","天翼高清融合尊享版B","天翼高清尊享版")
 IPTV产品<-c("政企IPTV","IPTV")
@@ -39,15 +41,15 @@ IPTV产品<-c("政企IPTV","IPTV")
 
 
 # ~~~~定义函数report_mobile -------------------------------------------------------
-#  地市、细分市场、渠道分群、销售点一级、城乡标识作为有排序的factor
+#  地市、细分市场、部门一级、销售点一级、城乡标识作为有排序的factor
 mobile$地市<-factor(mobile$地市)
 mobile$地市<-factor(mobile$地市,order = TRUE,levels = c("长春","吉林","延边","四平","通化","白城","辽源","松原","白山"))
 #
 mobile$细分市场<-factor(mobile$细分市场)
 mobile$细分市场<-factor(mobile$细分市场,order = TRUE,levels = c("行业市场","商业市场","高校市场","中小市场","家客市场 ","城市市场","农村市场"))
 #
-mobile$渠道分群<-factor(mobile$渠道分群)
-mobile$渠道分群<-factor(mobile$渠道分群,order = TRUE,levels = c("政企","实体","电子","未知"))
+mobile$部门一级<-factor(mobile$部门一级)
+mobile$部门一级<-factor(mobile$部门一级,order = TRUE,levels = c("政企","实体","电子","未知"))
 #
 mobile$渠道视图_销售点一级<-factor(mobile$渠道视图_销售点一级)
 mobile$渠道视图_销售点一级<-factor(mobile$渠道视图_销售点一级,order = TRUE,levels = c("直销渠道","实体渠道","电子渠道","未知"))
@@ -229,9 +231,15 @@ report_guding<-function(Col){
                    .(网上用户=sum(网上用户数,na.rm=T)),by=Col]
   存量单宽 <-mobile[业务类型=="互联网业务" & 用户存增量标识=="存量" & 是否融合=="否",
                     .(存量单宽=sum(计费到达用户数,na.rm=T)),by=Col]  
-  实体天翼高清用户数<-mobile[(产品 %in% 天翼高清产品 | 产品 %in% IPTV产品) & 渠道分群=="实体",
+  实体天翼高清用户数<-mobile[(产品 %in% 天翼高清产品 | 产品 %in% IPTV产品) & 部门一级=="实体",
                     .(实体天翼高清到达= sum(计费到达用户数,na.rm=T),
                               实体天翼高清新发展=sum(新发展用户数,na.rm=T)),by=Col]
+  宽带200M及以上<-mobile[业务类型=="互联网业务" & 宽带端口速率M %in% 宽带200M,
+                        .(宽带200M到达=sum(计费到达用户数,na.rm=T),
+                            宽带200M新发展=sum(新发展用户数,na.rm=T)),by=Col]
+  宽带FTTB <- mobile[业务类型=="互联网业务" &  宽带接入方式=="FTTB_LAN",
+                             .(FTTB_LAN计费=sum(计费到达用户数,na.rm=T),
+                               FTTB_LAN新发展=sum(新发展用户数,na.rm=T)),by=Col]
   result<-merge(固网收入,宽带业务,by=Col,all=T)
   result<-merge(result,宽带20M及以上,by=Col,all=T)
   result<-merge(result,宽带50M及以上,by=Col,all=T)
@@ -254,7 +262,9 @@ report_guding<-function(Col){
   result<-merge(result,宽带网上用户,by=Col,all=T)
   result<-merge(result,存量单宽,by=Col,all=T)
   result<-merge(result,实体天翼高清用户数,by=Col,all=T)
-
+  result<-merge(result,宽带200M及以上,by=Col,all=T)
+  result<-merge(result,宽带FTTB,by=Col,all=T)
+  
 fname<-str_c("quick_guding",Col[1],".csv")
 write.table(result,fname,sep = ",",row.names = FALSE)
 
@@ -275,11 +285,13 @@ Col<-"细分市场"
 x<-report_mobile(Col)
 y<-report_guding(Col)
 
-# 4、生成渠道分群报表 ----------------------------------------------------------------
+# 4、生成部门一级报表 ----------------------------------------------------------------
 
 
 
-Col<-c("渠道分群")
+#Col<-c("部门一级","部门二级")
+#Col<-c("部门一级","部门二级","部门三级")
+Col<-c("部门一级")
 x<-report_mobile(Col)
 y<-report_guding(Col)
 
@@ -307,7 +319,7 @@ Col<-c("ARPU分档")
 x<-report_mobile(Col)
 
 
-#Col <- c("渠道分群","地市")
+#Col <- c("部门一级","地市")
 #x<-report_mobile(col)
 
 
