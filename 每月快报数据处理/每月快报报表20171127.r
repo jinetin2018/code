@@ -20,9 +20,9 @@ library(stringr)
 # 1、读取数据 --------------------------------------------------------------------
 setwd("D:/R/quickreport/month_report")
 
-#mobile<-read.table("201802月度快报报表（统计表）.csv",sep=",",encoding="GBK",skip=4,header=TRUE)
-mobile <- fread("201802月度快报报表（统计表）.csv",sep=",",skip=4,header=TRUE,colClasses=c(rep("factor",63)))
-mobile[,45:63] <- lapply(mobile[,45:63], as.numeric)
+#mobile<-read.table("201803月度快报报表（统计表）.csv",sep=",",encoding="GBK",skip=4,header=TRUE)
+mobile <- fread("201803月度快报报表（统计表）.csv",sep=",",skip=4,header=TRUE,colClasses=c(rep("factor",45),rep("numeric",20)))
+mobile[,46:65] <- lapply(mobile[,46:65], as.numeric)
 #mobile<-data.table(mobile)
 
 #names(mobile)[12] <- "部门一级"
@@ -248,7 +248,7 @@ report_guding<-function(Col){
   实体天翼高清用户数<-mobile[(产品 %in% 天翼高清产品 | 产品 %in% IPTV产品) & 部门一级=="实体",
                     .(实体天翼高清到达= sum(计费到达用户数,na.rm=T),
                               实体天翼高清新发展=sum(新发展用户数,na.rm=T)),by=Col]
-  宽带200M及以上<-mobile[业务类型=="互联网业务" & 宽带端口速率M %in% 宽带200M,
+  宽带200M及以上<-mobile[(业务类型=="互联网业务") & (宽带端口速率M %in% 宽带200M),
                         .(宽带200M到达=sum(计费到达用户数,na.rm=T),
                             宽带200M新发展=sum(新发展用户数,na.rm=T)),by=Col]
   宽带FTTB <- mobile[业务类型=="互联网业务" &  宽带接入方式=="FTTB_LAN",
@@ -299,8 +299,8 @@ Col<-"细分市场"
 x<-report_mobile(Col)
 y<-report_guding(Col)
 # 4、生成部门一级报表 ----------------------------------------------------------------
-#Col<-c("部门一级","部门二级")
-#Col<-c("部门一级","部门二级","部门三级")
+Col<-c("部门一级","部门二级")
+Col<-c("部门一级","部门二级","部门三级")
 Col<-c("部门一级")
 x<-report_mobile(Col)
 y<-report_guding(Col)
