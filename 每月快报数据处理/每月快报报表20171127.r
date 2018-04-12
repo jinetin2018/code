@@ -21,6 +21,7 @@ library(stringr)
 setwd("D:/R/quickreport/month_report")
 
 #mobile<-read.table("201803月度快报报表（统计表）.csv",sep=",",encoding="GBK",skip=4,header=TRUE)
+# facotr转为数值变为0，1，2，序列。必须先转为numerical再转为数值。
 mobile <- fread("201803月度快报报表（统计表）.csv",sep=",",skip=4,header=TRUE,colClasses=c(rep("factor",45),rep("numeric",20)))
 mobile[,46:65] <- lapply(mobile[,46:65], as.numeric)
 #mobile<-data.table(mobile)
@@ -329,4 +330,16 @@ y<-report_guding(Col)
 #write.table(y,"y.csv",sep = ",",row.names = FALSE)
 
 ############################################################################
-
+# 统计移动存增量出账数、宽带存增量计费到达数
+mobile_存量 <- mobile[是否A口径出账=="是" & (业务类型=="CDMA后付" | 业务类型=="CDMA智能预付") & 用户存增量标识=="存量",
+                       .(存量a口径出账数=sum(集团出账用户数,na.rm=T)),by="地市"]
+mobile_增量 <- mobile[是否A口径出账=="是" & (业务类型=="CDMA后付" | 业务类型=="CDMA智能预付") & 用户存增量标识=="增量",
+                      .(增量a口径出账数=sum(集团出账用户数,na.rm=T)),by="地市"]
+guding_存量 <- mobile[业务类型=="互联网业务" & 用户存增量标识=="存量",
+                        .(存量宽带计费到达=sum(计费到达用户数,na.rm=T)),by="地市"]  
+guding_增量 <- mobile[业务类型=="互联网业务" & 用户存增量标识=="增量",
+                        .(增量宽带计费到达=sum(计费到达用户数,na.rm=T)),by="地市"]
+result <- merge(mobile_存量,mobile_增量,by="地市")
+result <- merge(result,guding_存量,by="地市")
+result <- merge(result,guding_增量,by="地市")
+write.table(result,"clipboard",row.names = FALSE,col.names = TRUE,sep = ",",quote = TRUE)
