@@ -1,0 +1,41 @@
+library(readr)
+library(data.table)
+setwd("D:/2017桌面文件资料/201801月资料/长春9个csv文件")
+data1 <- fread("431--长春网格数据--1.csv",sep = ",",header = TRUE)
+data2 <- fread("431--长春网格数据--2.csv",sep = ",",header = TRUE)
+data <- rbind(data1,data2)
+rm(data1,data2)
+data3 <- fread("431--长春网格数据--3.csv",sep = ",",header = TRUE)
+data <- rbind(data,data3)
+rm(data3)
+data4 <- fread("431--长春网格数据--4.csv",sep = ",",header = TRUE)
+data <- rbind(data,data4)
+rm(data4)
+data5 <- fread("431--长春网格数据--5.csv",sep = ",",header = TRUE)
+data <- rbind(data,data5)
+rm(data5)
+data6 <- fread("431--长春网格数据--6.csv",sep = ",",header = TRUE)
+data <- rbind(data,data6)
+rm(data6)
+data <- fread("data.csv",sep = ",",header = TRUE,quote = "\"")
+data7 <- fread("431--长春网格数据--7.csv",sep = ",",header = TRUE)
+data <- rbind(data,data7)
+rm(data7)
+data8 <- fread("431--长春网格数据--8.csv",sep = ",",header = TRUE)
+data <- rbind(data,data8)
+rm(data8)
+data9 <- fread("431--长春网格数据--9.csv",sep = ",",header = TRUE)
+data <- rbind(data,data9)
+rm(data9)
+
+x <- read.table("clipboard",header = TRUE)
+data <- merge(data,x,by="二级网格名称")
+x <- x$二级网格名称
+x <- as.character(x)
+
+for (i in x) {
+  fname <- paste(i,".csv")
+  temp <- data[data$二级网格名称==i,]
+  write.table(temp,fname,sep = ",",col.names = TRUE,row.names = FALSE)
+  }
+temp <- data[!(data$二级网格名称 %in% x),]
